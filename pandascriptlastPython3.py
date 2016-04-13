@@ -46,45 +46,6 @@ df = se.ix[1:]
 #Conversion du dataframe en string
 resultat=df.to_string(header=False,index=False)
 
-begin="""<?xml version="1.0" encoding="UTF-8"?>
-<!-- generator="WordPress.com" created="2015-07-03 12:43"-->
-<rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
-  <channel>
-<title>Interart</title>
-<link>https://interartparis.wordpress.com</link>
-<description>fg df fgdfg fdgfdgdfgdg dfgfd g dg d gfgfdgfdgdgg&lt;</description>
-<pubDate>Fri, 03 Jul 2015 12:43:09 +0000</pubDate>
-<language>fr</language>
-<wp:wxr_version>1.2</wp:wxr_version>
-<wp:base_site_url>http://wordpress.com/</wp:base_site_url>
-<wp:base_blog_url>https://interartparis.wordpress.com</wp:base_blog_url>
-<wp:author>
-  <wp:author_login>interart9</wp:author_login>
-  <wp:author_email>joachim@interart.fr</wp:author_email>
-  <wp:author_display_name><![CDATA[User1]]></wp:author_display_name>
-  <wp:author_first_name><![CDATA[]]></wp:author_first_name>
-  <wp:author_last_name><![CDATA[]]></wp:author_last_name>
-</wp:author>
-<wp:term>
-  <wp:term_id>8119</wp:term_id>
-  <wp:term_taxonomy>nav_menu</wp:term_taxonomy>
-  <wp:term_slug>menu-1</wp:term_slug>
-  <wp:term_name><![CDATA[Menu 1]]></wp:term_name>
-</wp:term>
-<wp:term>
-  <wp:term_id>8533</wp:term_id>
-  <wp:term_taxonomy>nav_menu</wp:term_taxonomy>
-  <wp:term_slug>menu2</wp:term_slug>
-  <wp:term_name><![CDATA[menu2]]></wp:term_name>
-</wp:term>
-<generator>http://wordpress.com/</generator>
-<image>
-		<url>https://s2.wp.com/i/buttonw-com.png</url>
-		<title>Interart</title>
-		<link>https://interartparis.wordpress.com</link>
-</image>"""
-
-
 
 resultat=resultat+"</channel></rss>"
 
@@ -93,8 +54,7 @@ donneesClean=resultat.replace("&","&amp;")
 donneesClean.encode("utf-8")
 
 
-
-# Enregistrement dans fichier xml
+# Save data in xml files
 mon_fichier = open("fichier.xml", "w") # w option w écrase tout !a append
 mon_fichier.write(donneesClean)
 mon_fichier.close()
