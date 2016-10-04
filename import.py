@@ -9,27 +9,30 @@ x1= pd.read_excel('articles.xlsx',encoding='utf-8')
 
 pd.set_option('max_colwidth',1000)
 
-# Récupération du mois en cours pour l'import et création du lien image
+# Récupération du mois en cours pour l'import et création du lien image.
 now=datetime.now()
 month=now.strftime("%m")
 
 se = x1[['Designation','Code','Editeur','Nbre Illustrations','Langue','Prix Vente TTC','Descriptif','Sujet']]
 
-# Normalisation du nom des colonnes
+# Normalisation du nom des colonnes.
 se=se.rename(columns = {'Nbre Illustrations':'NbreIllustrations'})
 se=se.rename(columns = {'Prix Vente TTC':'PrixVenteTTC'})
 
-# Insertion colonnes supplémentaires
+# Insertion colonnes supplémentaires.
 se.insert(1,'Images',0,False)
 se.insert(4,'ISBN',0,False)
 se.insert(9,'Post_id',0,False)
 
-# Test de valeurs non nulle dans le dataframe 
+# S'il y a des valeurs nulle remplissage avec la valeur 'inconnu'.
+se=se.fillna('inconnu')
+
+# Test de valeurs non nulle dans le dataframe. 
 if se.isnull().any().any() == True:    
     print ("Il y a une valeur True dans le tableau donc une case vide")
     print (se.isnull().any) 
     
-# Application normalisation sur les colonnes contenant du texte
+# Application normalisation sur les colonnes contenant du texte.
 se['Designation'] = se['Designation'].map(lambda x: ucd.normalize('NFKD', x))
 se['Descriptif'] = se['Descriptif'].map(lambda x: ucd.normalize('NFKD', x))
 
@@ -44,20 +47,20 @@ se.loc[:,'Descriptif']="<p>"+se['Descriptif'].astype(str)+"</p>]]></content:enco
 se.loc[:,'Post_id']="<wp:post_id>"+se['Code']+"</wp:post_id>"+"<wp:comment_status>closed</wp:comment_status><wp:status>publish</wp:status><wp:post_type>post</wp:post_type>"
 se.loc[:,'Sujet']='<category domain="category"  nicename="'+se['Sujet']+'"><![CDATA['+se['Sujet']+"]]></category></item>"
 
-# Suppression de la première ligne doublon de l'index extrait du logiciel métier
+# Suppression de la première ligne doublon de l'index extrait du logiciel métier.
 df = se.ix[1:]
 
-# Conversion du dataframe en string
+# Conversion du dataframe en string.
 resultat=df.to_string(header=False,index=False)
 
-# Ajout des balises de fin en xml
+# Ajout des balises de fin en xml.
 resultat=resultat+"</channel></rss>"
 
-#Conversion caractère & en code html et encodage en utf-8
+#Conversion caractère & en code html et encodage en utf-8.
 donneesClean=resultat.replace("&","&amp;")
 donneesClean.encode("utf-8")
 
-# Enregistrement dans fichier xml
+# Enregistrement dans fichier xml.
 mon_fichier = open('fichier.xml',encoding='utf-8', mode='a') # w option w écrase tout !a append
 mon_fichier.write(donneesClean)
 mon_fichier.close()
